@@ -4,6 +4,6 @@
   object-fit: contain; /* maintain aspect ratio */
   margin: 0 auto; /* center the image */
 }
-.carousel-caption .d-none .d-md-block h3 p{
-    color: #ffffff;
+.carousel-caption .d-none .d-md-block h3 p {
+  color: #ffffff;
 }
