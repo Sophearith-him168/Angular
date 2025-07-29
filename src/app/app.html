@@ -1,13 +1,40 @@
 <div class="container-fluid">
-  <app-navbar></app-navbar>
+    <app-navbar></app-navbar>
 </div>
 <br /><br /><br /><br />
 <app-top-slider></app-top-slider>
 <br /><br /><br /><br />
-<div class="container-fluid d-flex flex-wrap justify-content-center">
-  @for (item of products; track item) {
-  <app-product-card></app-product-card>
-  }
+<div class="container d-flex flex-wrap justify-content-center">
+  <!--product card-->
+  <div class="row">
+    @for (item of products; track item) {
+    <div class="col-lg-3 col-md-3 col-sm-12 mt-2">
+      <div class="card shadow-sm h-100">
+        <span class="badge badge-secondary pro-cat">category</span>
+        <img
+          class="card-img-top p-4"
+          src="{{ item.image }}"
+          alt="{{ item.title }}"
+          style="height: 200px; object-fit: contain"
+        />
+        <div class="card-body">
+          <h5 class="card-title product-title">
+            {{ item.title }}
+          </h5>
+          <p class="card-text product-description">
+            {{ item.description }}
+          </p>
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <span class="h5 mb-0">$ {{ item.price }}</span>
+            <button class="btn btn-primary btn-sm" (click)="addToCart(item)">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
 </div>
 
 <app-footer></app-footer>
