@@ -23,7 +23,7 @@ export class App {
   addToCart(item: any) {
     let cart_list = JSON.parse(localStorage.getItem('cart_list') ?? '[]');
 
-    // Check if item already exists
+   
     let existingItem = cart_list.find(
       (cartItem: any) => cartItem.name === item.title
     );
@@ -32,15 +32,15 @@ export class App {
       existingItem.qty++;
     } else {
       cart_list.push({
-        img: item.image, // ✅ match Navbar template
-        name: item.title, // ✅ match Navbar template
+        img: item.image,
+        name: item.title, 
         qty: 1,
         price: item.price,
       });
     }
 
     localStorage.setItem('cart_list', JSON.stringify(cart_list));
-    window.dispatchEvent(new Event('cartUpdated')); // notify navbar
+    window.dispatchEvent(new Event('cartUpdated')); 
   }
 
   products: any[] = [
