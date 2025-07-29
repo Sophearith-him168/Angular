@@ -43,6 +43,7 @@
           <a class="nav-link disabled" aria-disabled="true">Disabled</a>
         </li>
       </ul>
+      <!-- ...existing code... -->
       <form class="d-flex" role="search">
         <input
           class="form-control me-2"
@@ -50,8 +51,103 @@
           placeholder="Search"
           aria-label="Search"
         />
-        <button class="btn btn-outline-success" type="submit">Cart</button>
+        <div class="form-inline my-2 my-lg-0">
+          <button
+            class="btn btn-outline-success my-2 my-sm-0"
+            type="button"
+            (click)="openCartModal()"
+          >
+            Cart({{ cart_list.length }})
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </nav>
+<div
+  class="modal fade"
+  id="cartModal"
+  tabindex="-1"
+  aria-labelledby="cartModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cartModalLabel">Cart Validation</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="cart_list.length > 0; else emptyCart">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Qty</th>
+                <th></th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of cart_list; let i = index">
+                <td>
+                  <img [src]="item.img" alt="{{ item.name }}" width="50" />
+                </td>
+                <td>{{ item.name }}</td>
+                <td>
+                  {{ item.qty }}
+                </td>
+                <td>{{ item.total | currency : "USD" }}</td>
+                <td>
+                  <button
+                    class="btn btn-sm btn-primary"
+                    (click)="increaseQty(i)"
+                  >
+                    Add
+                  </button>
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger" (click)="removeItem(i)">
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between mt-3">
+            <strong
+              >Grand Total (USD):
+              {{ getGrandTotalUSD() | currency : "USD" }}</strong
+            >
+            <strong>(KHR): {{ getGrandTotalKHR() | number }} ៛</strong>
+          </div>
+        </div>
+
+        <ng-template #emptyCart>
+          <p>Your cart is empty.</p>
+        </ng-template>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="checkout()"
+          [disabled]="cart_list.length === 0"
+        >
+          Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

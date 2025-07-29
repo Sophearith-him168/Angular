@@ -1,18 +1,48 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Navbar } from './navbar/navbar';
+import { NavbarComponent } from './navbar/navbar';
 import { TopSlider } from './top-slider/top-slider';
-import { ProductCard } from './product-card/product-card';
+
+
 import { Footer } from './footer/footer';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Navbar, TopSlider, ProductCard, Footer],
+  imports: [RouterOutlet, NavbarComponent, TopSlider, Footer],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App {
   protected title = 'sv3_ng_app';
+  ngOnInit() {
+    let cart_list = localStorage.getItem('cart_list') ?? '[]';
+    this.cart_list = JSON.parse(cart_list);
+  }
+  cart_list: any[] = [];
+
+  addToCart(item: any) {
+    let cart_list = JSON.parse(localStorage.getItem('cart_list') ?? '[]');
+
+   
+    let existingItem = cart_list.find(
+      (cartItem: any) => cartItem.name === item.title
+    );
+
+    if (existingItem) {
+      existingItem.qty++;
+    } else {
+      cart_list.push({
+        img: item.image,
+        name: item.title, 
+        qty: 1,
+        price: item.price,
+      });
+    }
+
+    localStorage.setItem('cart_list', JSON.stringify(cart_list));
+    window.dispatchEvent(new Event('cartUpdated')); 
+  }
+
   products: any[] = [
     {
       id: 1,
